@@ -50,3 +50,18 @@ def test_read_all_jobs(client: TestClient):
     assert response.status_code == 200
     assert response.json()[0]
     assert response.json()[1]
+
+
+def test_update_a_job(client: TestClient):
+    data = {
+        "title": "New Job super",
+        "company": "doogle",
+        "company_url": "www.doogle.com",
+        "location": "USA,NY",
+        "description": "fastapi",
+        "date_posted": "2022-03-20",
+    }
+    client.post(url="/jobs/", content=json.dumps(data))
+    data["title"] = "test new title"
+    response = client.put(url="/jobs/1", content=json.dumps(data))
+    assert response.json()["msg"] == "Successfully updated data."
