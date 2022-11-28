@@ -13,11 +13,10 @@ router = APIRouter(include_in_schema=False)
 
 
 @router.get("/")
-async def home(request: Request, db: Session = Depends(get_db)):
+async def home(request: Request, db: Session = Depends(get_db), msg: str = None):
     jobs = list_jobs(db=db)
-    print(jobs)
     return templates.TemplateResponse(
-        "general_pages/homepage.html", {"request": request, "jobs": jobs}
+        "general_pages/homepage.html", {"request": request, "jobs": jobs, "msg": msg}
     )
 
 
