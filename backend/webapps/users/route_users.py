@@ -17,8 +17,10 @@ router = APIRouter(include_in_schema=False)
 
 
 @router.get("/register/")
-def get(request: Request):
-    return templates.TemplateResponse("users/register.html", {"request": request})
+def get(request: Request, msg: str = None):
+    return templates.TemplateResponse(
+        "users/register.html", {"request": request, "msg": msg}
+    )
 
 
 @router.post("/register/")
