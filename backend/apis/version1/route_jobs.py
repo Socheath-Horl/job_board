@@ -1,4 +1,5 @@
 from typing import List
+from typing import Optional
 
 from apis.version1.route_login import get_current_user_from_token
 from db.models.user import User
@@ -6,6 +7,7 @@ from db.repository.job import create_new_job
 from db.repository.job import delete_job_by_id
 from db.repository.job import list_jobs
 from db.repository.job import retreive_job
+from db.repository.job import search_job
 from db.repository.job import update_job_by_id
 from db.session import get_db
 from fastapi import APIRouter
@@ -77,3 +79,13 @@ def delete_job(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Job with id {id} not found"
         )
     return {"msg": "Successfully deleted."}
+
+
+@router.get("/autocomplete")
+def autocomplete(term: Optional[str] = None, db: Session = Depends(get_db)):
+    print(term)
+    jobs = search_job(query=term, db=db)
+    job_titles = []
+    for job in jobs:
+        job_titles.append(job.title)
+    return job_titles

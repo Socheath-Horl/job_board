@@ -40,3 +40,8 @@ def delete_job_by_id(id: int, owner_id: int, db: Session):
     existing_job.delete(synchronize_session=False)
     db.commit()
     return 1
+
+
+def search_job(query: str, db: Session):
+    jobs = db.query(Job).filter(Job.title.contains(query))
+    return jobs
